@@ -12,23 +12,20 @@
 LICENSE = "CLOSED"
 LIC_FILES_CHKSUM = ""
 
-inherit pkgconfig
+inherit pkgconfig update-rc.d
 
 DEPENDS += "libgpiod (< 2.0)"
+
+INITSCRIPT_PACKAGES = "${PN}"
+INITSCRIPT_NAME:${PN} = "esme-gpio26-toggle"
 
 # No information for SRC_URI yet (only an external source tree was specified)
 SRC_URI = "git:///home/amelie/w/src/esme-3s11-gpio-toggle;branch=main;protocol=file"
 SRCREV = "${AUTOREV}"
 
-
 # NOTE: this is a Makefile-only piece of software, so we cannot generate much of the
 # recipe automatically - you will need to examine the Makefile yourself and ensure
 # that the appropriate arguments are passed in.
-
-do_configure () {
-	# Specify any needed configure commands here
-	:
-}
 
 do_compile () {
 	# You will almost certainly need to add additional arguments here
