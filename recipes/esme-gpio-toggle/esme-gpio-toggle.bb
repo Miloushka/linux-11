@@ -17,7 +17,8 @@ inherit pkgconfig
 DEPENDS += "libgpiod (< 2.0)"
 
 # No information for SRC_URI yet (only an external source tree was specified)
-SRC_URI = ""
+SRC_URI = "git:///home/amelie/w/src/esme-3s11-gpio-toggle;branch=main;protocol=file"
+SRCREV = "${AUTOREV}"
 
 
 # NOTE: this is a Makefile-only piece of software, so we cannot generate much of the
@@ -36,6 +37,6 @@ do_compile () {
 
 do_install () {
 	# This is a guess; additional arguments may be required
-	oe_runmake install
+	oe_runmake install INSTALL_DIR=${D}
 }
 
