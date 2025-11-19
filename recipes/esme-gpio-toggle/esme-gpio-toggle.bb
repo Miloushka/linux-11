@@ -20,7 +20,7 @@ INITSCRIPT_PACKAGES = "${PN}"
 INITSCRIPT_NAME:${PN} = "esme-gpio26-toggle"
 
 # No information for SRC_URI yet (only an external source tree was specified)
-SRC_URI = "git:///home/amelie/w/src/esme-3s11-gpio-toggle;branch=main;protocol=file"
+SRC_URI = "git://github.com/Miloushka/linux-11.git;protocol=https;branch=scarthgap"
 SRCREV = "${AUTOREV}"
 
 # NOTE: this is a Makefile-only piece of software, so we cannot generate much of the
