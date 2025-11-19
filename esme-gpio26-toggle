@@ -8,7 +8,7 @@
 # Short-Description: ESME GPIO#26 toggle service
 ### END INIT INFO
 
-DAEMON="/usr/bin/gpio"
+DAEMON="/usr/bin/esme-gpio-toggle"
 PIDFILE="/var/run/esme-gpio26-toggle.pid"
 
 case "$1" in
