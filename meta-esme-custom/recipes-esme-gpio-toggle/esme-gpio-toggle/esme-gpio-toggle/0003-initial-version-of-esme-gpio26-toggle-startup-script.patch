@@ -1,0 +1,58 @@
+From ba6bc61f0b2ba028dc8c435fceb52cf98902a1ff Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Am=C3=A9lie?= <marieamelie20@icloud.com>
+Date: Wed, 19 Nov 2025 09:00:13 +0100
+Subject: [PATCH] initial version of esme-gpio26-toggle startup script
+
+---
+ esme-gpio26-toggle.sh | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
+ create mode 100644 esme-gpio26-toggle.sh
+
+diff --git a/esme-gpio26-toggle.sh b/esme-gpio26-toggle.sh
+new file mode 100644
+index 0000000..6453efe
+--- /dev/null
++++ b/esme-gpio26-toggle.sh
+@@ -0,0 +1,42 @@
++#!/bin/sh
++### BEGIN INIT INFO
++# Provides: esme-gpio26-toggle
++# Required-Start: $remote_fs $time
++# Required-Stop: $remote_fs $time
++# Default-Start: 3 4 5
++# Default-Stop: 0 1 2 6
++# Short-Description: ESME GPIO#26 toggle service
++### END INIT INFO
++
++DAEMON="/usr/bin/gpio"
++PIDFILE="/var/run/esme-gpio26-toggle.pid"
++
++case "$1" in
++  start)
++    echo "Starting $NAME..."
++    start-stop-daemon --start --background --make-pidfile --pidfile "$PIDFILE" --exec "$DAEMON"
++    ;;
++
++  stop)
++    echo "Stopping $NAME..."
++    start-stop-daemon --stop --pidfile "$PIDFILE" --retry=TERM/5/KILL/5
++    ;;
++
++  restart)
++    "$0" stop
++    "$0" start
++    ;;
++
++  status)
++    if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE") 2>/dev/null; then
++      echo "Status of esme-gpio-toggle for GPIO#26: running with PID=$(cat $PIDFILE)"
++    else
++      echo "Status of esme-gpio-toggle for GPIO#26: stopped"
++    fi
++    ;;
++
++  *)
++    echo "Usage : esme-gpio26-toggle (start | stop | restart | status )"
++    exit 1
++    ;;
++esac

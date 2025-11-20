@@ -1,0 +1,58 @@
+From d8f7d5f9b9510f71dc30a472101f22877c6a0bbe Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Am=C3=A9lie?= <marieamelie20@icloud.com>
+Date: Wed, 19 Nov 2025 09:09:42 +0100
+Subject: [PATCH] install esme-gpio26-toggle startup script
+
+---
+ Makefile                                    | 11 ++++++++++-
+ esme-gpio26-toggle.sh => esme-gpio26-toggle |  2 +-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+ rename esme-gpio26-toggle.sh => esme-gpio26-toggle (96%)
+
+diff --git a/Makefile b/Makefile
+index 5d1555b..8eea098 100644
+--- a/Makefile
++++ b/Makefile
+@@ -2,7 +2,7 @@
+ INSTALL_DIR ?= ./.install
+ 
+ # Options de compilation générales (on ajoute, on ne remplace pas)
+-CFLAGS += -Wall -Wextra -O2
++
+ CFLAGS += $(shell pkg-config --cflags libgpiod )
+ LDLIBS += $(shell pkg-config --libs libgpiod )
+ 
+@@ -11,8 +11,17 @@ esme-gpio-toggle: esme-gpio-toggle.o
+ 
+ # Cible d'installation
+ install: esme-gpio-toggle
++	mkdir -p $(INSTALL_DIR)/etc/init.d
+ 	mkdir -p $(INSTALL_DIR)/usr/bin
++
++	# Installer le binaire
+ 	cp esme-gpio-toggle $(INSTALL_DIR)/usr/bin/
++	chmod 0755 $(INSTALL_DIR)/usr/bin/esme-gpio-toggle
++
++	# Installer le script d'init
++	cp esme-gpio26-toggle $(INSTALL_DIR)/etc/init.d/esme-gpio26-toggle
++	chmod 0755 $(INSTALL_DIR)/etc/init.d/esme-gpio26-toggle
++
+ 
+ # Nettoyage des fichiers générés
+ clean:
+diff --git a/esme-gpio26-toggle.sh b/esme-gpio26-toggle
+similarity index 96%
+rename from esme-gpio26-toggle.sh
+rename to esme-gpio26-toggle
+index 6453efe..714c1f6 100644
+--- a/esme-gpio26-toggle.sh
++++ b/esme-gpio26-toggle
+@@ -8,7 +8,7 @@
+ # Short-Description: ESME GPIO#26 toggle service
+ ### END INIT INFO
+ 
+-DAEMON="/usr/bin/gpio"
++DAEMON="/usr/bin/esme-gpio-toggle"
+ PIDFILE="/var/run/esme-gpio26-toggle.pid"
+ 
+ case "$1" in
