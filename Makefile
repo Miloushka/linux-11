@@ -1,13 +1,18 @@
 # Dossier d'installation par défault 
 INSTALL_DIR ?= ./.install
 
-# Options de compilation générales (on ajoute, on ne remplace pas)
+# Nom du binaire
+TARGET = esme-gpio-toggle
 
+# Liste des fichiers objets
+OBJS = esme-gpio-toggle.o
+
+# Options de compilation générales (on ajoute, on ne remplace pas)
 CFLAGS += $(shell pkg-config --cflags libgpiod )
 LDLIBS += $(shell pkg-config --libs libgpiod )
 
-# Construit le programme esme-gpio-toggle
-esme-gpio-toggle: esme-gpio-toggle.o
+# Compilation du programme
+$(TARGET): $(OBJS)
 
 # Cible d'installation
 install: esme-gpio-toggle
@@ -25,4 +30,4 @@ install: esme-gpio-toggle
 
 # Nettoyage des fichiers générés
 clean:
-	$(RM) esme-gpio-toggle *.o
+	$(RM) $(OBJS)

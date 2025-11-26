@@ -1,24 +1,31 @@
 #include <gpiod.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>     
-#include <string.h> 
+#include <unistd.h>
+#include <string.h>
 
 // GPIO par défaut si aucun argument n'est donné
 #define DEFAULT_GPIO 26
-
-// Le chip GPIO utilisé sur Raspberry Pi (toujours gpiochip0)
+// Le chip GPIO utilisé sur Raspberry Pi
 #define GPIO_CHIP "/dev/gpiochip0"
 
-int main(int argc, char *argv[])
+
+int lire_arguments(int argc, char *argv[])
 {
     int gpio_number = DEFAULT_GPIO;
-    int value = 0;   // Valeur envoyée à la LED (0 ou 1)
 
-    // Lire les arguments 
+    // Lire les arguments
     if (argc == 3 && strcmp(argv[1], "--gpio") == 0) {
-        gpio_number = atoi(argv[2]);   // Convertir en entier
+        gpio_number = atoi(argv[2]); // Convertir en entier
     }
+
+    return gpio_number;
+}
+
+int demarrer_gpio(int gpio_number)
+{
+    // Valeur envoyée à la LED
+    int value = 0;
 
     printf("GPIO utilisée : %d\n", gpio_number);
 
@@ -28,7 +35,6 @@ int main(int argc, char *argv[])
         printf("Erreur : impossible d'ouvrir %s\n", GPIO_CHIP);
         return 1;
     }
-
 
     // Récupérer la ligne passé dans le terminal
     struct gpiod_line *line = gpiod_chip_get_line(chip, gpio_number);
@@ -48,11 +54,17 @@ int main(int argc, char *argv[])
 
     // Faire clignoter la led toutes les secondes
     while (1) {
-        value = !value;  // Inverser la valeur 
+        value = !value; // Inverser la valeur 
         gpiod_line_set_value(line, value);
         printf("GPIO %d = %d\n", gpio_number, value);
         sleep(1); // Attendre une seconde
     }
-    
+
     return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    int gpio = lire_arguments(argc, argv);
+    return demarrer_gpio(gpio);
 }
